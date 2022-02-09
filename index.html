@@ -14,6 +14,15 @@
     p span {
       display: block;
     }
+
+    .yep,
+    .nope {
+      display: none;
+    }
+
+    .show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -24,6 +33,14 @@
     <span>in Bastrop County?</span>
   </p>
   <!-- Yes/No -->
+  <div class="yep">
+    <p>Yep!</p>
+    <p>🧯</p>
+  </div>
+  <div class="nope">
+    <p>Nope!</p>
+    <p>🔥</p>
+  </div>
   <p>
     <span>If there's an</span>
     <span>emergency</span>
@@ -31,5 +48,21 @@
   <button>
     Ray (Phone Number)
   </button>
+  <script>
+    let countyId = 11 /* Bastrop: 11, Travis: 227 */
+    let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      let response = await fetch(url)
+      response = await response.json()
+      let isBurnBan = response.features[0].attributes.BurnBan === 'Yes'
+
+      if (isBurnBan) {
+        document.querySelector('.yep').classList.add('show')
+      } else {
+        document.querySelector('.nope').classList.add('show')
+      }
+    })
+  </script>
 </body>
 </html>
