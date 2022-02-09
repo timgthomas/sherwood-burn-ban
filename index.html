@@ -15,6 +15,7 @@
       display: block;
     }
 
+    .hmm,
     .yep,
     .nope {
       display: none;
@@ -32,7 +33,10 @@
     <span>burn ban</span>
     <span>in Bastrop County?</span>
   </p>
-  <!-- Yes/No -->
+  <div class="hmm show">
+    <p>Loading&hellip;</p>
+    <p>🤔</p>
+  </div>
   <div class="yep">
     <p>Yep!</p>
     <p>🧯</p>
@@ -53,10 +57,15 @@
     let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
 
     window.addEventListener('DOMContentLoaded', async () => {
+      // Fetch the burn ban status
       let response = await fetch(url)
       response = await response.json()
       let isBurnBan = response.features[0].attributes.BurnBan === 'Yes'
 
+      // Hide the loading indicator
+      document.querySelector('.hmm').classList.remove('show')
+
+      // Show the appropriate message
       if (isBurnBan) {
         document.querySelector('.yep').classList.add('show')
       } else {
