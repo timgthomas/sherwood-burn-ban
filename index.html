@@ -6,34 +6,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sherwood Burn Ban</title>
   <style>
-    h1,
-    p {
+    /* Variables */
+
+    :root {
+      --color-hmm: #8c8c8c;
+
+      --color-em: hsl(15, 100%, 56%);
+
+      --color-yep-dark: hsl(29, 92%, 10%);
+      --color-yep: #f68219;
+
+      --color-nope-dark: hsl(211, 100%, 15%);
+      --color-nope: hsl(211, 100%, 57%);
+    }
+
+    body.nope {
+      --color-background: var(--color-nope-dark);
+      --color-border: var(--color-nope);
+    }
+
+    /* Resets */
+
+    * {
+      box-sizing: border-box;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Typography */
+
+    :root {
+      font-size: 62.5%;
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font: 0 / 0 a;
+    }
+
+    footer {
+      color: var(--color-border);
+      font-size: 1.4rem;
+      line-height: 1.618;
       text-align: center;
     }
 
-    p span {
-      display: block;
+    /* Titles */
+
+    h1 {
+      background: center / contain no-repeat url('./title-a.png');
+      height: 12rem;
+      width: 30rem;
     }
 
-    .hmm,
-    .yep,
-    .nope {
-      display: none;
+    p.result {
+      align-items: center;
+      border: 0.4rem solid var(--color-border);
+      border-radius: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      height: 20rem;
+      justify-content: space-around;
+      margin: 3.2rem 0;
+      padding: 3.2rem 0;
+      width: 28rem;
     }
 
-    .show {
-      display: block;
+      p.result .description {
+        font-size: 3.6rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      p.result .emoji {
+        font-size: 7.2rem;
+      }
+
+    /* Global */
+
+    body {
+      align-items: center;
+      background: var(--color-background);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding-top: 3rem;
     }
+
+    footer {
+      width: 28rem;
+    }
+
   </style>
 </head>
-<body>
-  <h1>Sherwood Burn Ban</h1>
-  <p>
-    <span>Is there a</span>
-    <span>burn ban</span>
-    <span>in Bastrop County?</span>
+<body class="nope">
+  <h1>Is there a burn ban at Sherwood?</h1>
+  <p class="result">
+    <span class="description">Nope!</span>
+    <span class="emoji">🏕</span>
   </p>
-  <div class="hmm show">
+  <!-- <p>
+    <span class="a1">Is there a</span>
+    <em class="a2">burn ban</em>
+    <span class="a3">at Sherwood?</span>
+  </p> -->
+  <!-- <div class="hmm show">
     <p>Loading&hellip;</p>
     <p>🤔</p>
   </div>
@@ -46,12 +131,13 @@
     <p>🔥</p>
   </div>
   <p>
-    <span>If there's an</span>
-    <span>emergency</span>
-  </p>
-  <button>
-    Ray (Phone Number)
-  </button>
+    <span class="b1">If there’s an</span>
+    <em class="b2">Emergency</em>
+    <span class="b3">Dial 911</span>
+  </p> -->
+  <footer>
+    Data is provided by the <a href="https://tfsweb.tamu.edu/burnbans/">Texas A&amp;M Forest Service</a>. Be aware of local conditions before starting any fire. Visit the <a href="https://www.co.bastrop.tx.us/page/em.outdoor_burning">Bastrop County web site</a> for details about outdoor burning.
+  </footer>
   <script>
     let countyId = 11 /* Bastrop: 11, Travis: 227 */
     let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
@@ -62,15 +148,15 @@
       response = await response.json()
       let isBurnBan = response.features[0].attributes.BurnBan === 'Yes'
 
-      // Hide the loading indicator
-      document.querySelector('.hmm').classList.remove('show')
+      // // Hide the loading indicator
+      // document.querySelector('.hmm').classList.remove('show')
 
-      // Show the appropriate message
-      if (isBurnBan) {
-        document.querySelector('.yep').classList.add('show')
-      } else {
-        document.querySelector('.nope').classList.add('show')
-      }
+      // // Show the appropriate message
+      // if (isBurnBan) {
+      //   document.querySelector('.yep').classList.add('show')
+      // } else {
+      //   document.querySelector('.nope').classList.add('show')
+      // }
     })
   </script>
 </body>
