@@ -9,21 +9,38 @@
     /* Variables */
 
     :root {
-      --color-hmm: #8c8c8c;
+      --color-hmm: hsl(0, 0%, 69%);
+      --color-hmm-dark: hsl(0, 0%, 15%);
 
       --color-em: hsl(15, 100%, 56%);
 
       --color-yep-dark: hsl(29, 92%, 10%);
-      --color-yep: #f68219;
+      --color-yep: hsl(15, 100%, 56%);
 
       --color-nope-dark: hsl(211, 100%, 15%);
       --color-nope: hsl(211, 100%, 57%);
+    }
+
+    body.hmm {
+      --color-background: var(--color-hmm-dark);
+      --color-border: var(--color-hmm);
     }
 
     body.nope {
       --color-background: var(--color-nope-dark);
       --color-border: var(--color-nope);
     }
+
+    body.yep {
+      --color-background: var(--color-yep-dark);
+      --color-border: var(--color-yep);
+    }
+
+      body.hmm .show-hmm,
+      body.nope .show-nope,
+      body.yep .show-yep {
+        display: flex;
+      }
 
     /* Resets */
 
@@ -71,12 +88,12 @@
       align-items: center;
       border: 0.4rem solid var(--color-border);
       border-radius: 1.6rem;
-      display: flex;
+      display: none;
       flex-direction: column;
       height: 20rem;
       justify-content: space-around;
       margin: 3.2rem 0;
-      padding: 3.2rem 0;
+      padding: 2.4rem 0;
       width: 28rem;
     }
 
@@ -99,6 +116,7 @@
       display: flex;
       flex-direction: column;
       padding-top: 3rem;
+      transition: all 250ms;
     }
 
     footer {
@@ -107,56 +125,35 @@
 
   </style>
 </head>
-<body class="nope">
+<body class="hmm">
   <h1>Is there a burn ban at Sherwood?</h1>
-  <p class="result">
+  <p class="result show-hmm">
+    <span class="description">Checking…</span>
+    <span class="emoji">🤔</span>
+  </p>
+  <p class="result show-nope">
     <span class="description">Nope!</span>
     <span class="emoji">🏕</span>
   </p>
-  <!-- <p>
-    <span class="a1">Is there a</span>
-    <em class="a2">burn ban</em>
-    <span class="a3">at Sherwood?</span>
-  </p> -->
-  <!-- <div class="hmm show">
-    <p>Loading&hellip;</p>
-    <p>🤔</p>
-  </div>
-  <div class="yep">
-    <p>Yep!</p>
-    <p>🧯</p>
-  </div>
-  <div class="nope">
-    <p>Nope!</p>
-    <p>🔥</p>
-  </div>
-  <p>
-    <span class="b1">If there’s an</span>
-    <em class="b2">Emergency</em>
-    <span class="b3">Dial 911</span>
-  </p> -->
+  <p class="result show-yep">
+    <span class="description">Yes!</span>
+    <span class="emoji">🔥</span>
+  </p>
   <footer>
     Data is provided by the <a href="https://tfsweb.tamu.edu/burnbans/">Texas A&amp;M Forest Service</a>. Be aware of local conditions before starting any fire. Visit the <a href="https://www.co.bastrop.tx.us/page/em.outdoor_burning">Bastrop County web site</a> for details about outdoor burning.
   </footer>
   <script>
-    let countyId = 11 /* Bastrop: 11, Travis: 227 */
+    let countyId = 11 // Bastrop: 11, Travis: 227
     let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
 
     window.addEventListener('DOMContentLoaded', async () => {
-      // Fetch the burn ban status
       let response = await fetch(url)
       response = await response.json()
       let isBurnBan = response.features[0].attributes.BurnBan === 'Yes'
 
-      // // Hide the loading indicator
-      // document.querySelector('.hmm').classList.remove('show')
-
-      // // Show the appropriate message
-      // if (isBurnBan) {
-      //   document.querySelector('.yep').classList.add('show')
-      // } else {
-      //   document.querySelector('.nope').classList.add('show')
-      // }
+      document.body.classList.remove('hmm')
+      document.body.classList.toggle('yep', isBurnBan)
+      document.body.classList.toggle('nope', !isBurnBan)
     })
   </script>
 </body>
