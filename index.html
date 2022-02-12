@@ -143,7 +143,7 @@
     <span class="emoji">🔥</span>
   </p>
   <footer>
-    Data is provided by the <a href="https://tfsweb.tamu.edu/burnbans/">Texas A&amp;M Forest Service</a>. Be aware of local conditions before starting any fire. Visit the <a href="https://www.co.bastrop.tx.us/page/em.outdoor_burning">Bastrop County web site</a> for details about outdoor burning.
+    Data is provided by Sherwood management and the <a href="https://tfsweb.tamu.edu/burnbans/">Texas A&amp;M Forest Service</a>. Be aware of local conditions before starting any fire. Visit the <a href="https://www.co.bastrop.tx.us/page/em.outdoor_burning">Bastrop County web site</a> for details about outdoor burning.
   </footer>
   <script>
     let countyId = 11 // Bastrop: 11, Travis: 227
@@ -152,7 +152,8 @@
     window.addEventListener('DOMContentLoaded', async () => {
       let response = await fetch(url)
       response = await response.json()
-      let isBurnBan = response.features[0].attributes.BurnBan === 'Yes'
+      let isRayBan = new Date() > new Date('2022-02-12T07:00-06:00')
+      let isBurnBan = isRayBan || response.features[0].attributes.BurnBan === 'Yes'
 
       document.body.classList.remove('hmm')
       document.body.classList.toggle('yep', isBurnBan)
