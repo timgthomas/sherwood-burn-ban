@@ -152,7 +152,7 @@
     window.addEventListener('DOMContentLoaded', async () => {
       let response = await fetch(url)
       response = await response.json()
-      let isRayBan = new Date() > new Date('2022-02-12T07:00-06:00')
+      let isRayBan = false // new Date() > new Date('2022-02-12T07:00-06:00')
       let isBurnBan = isRayBan || response.features[0].attributes.BurnBan === 'Yes'
 
       document.body.classList.remove('hmm')
