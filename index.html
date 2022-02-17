@@ -152,7 +152,8 @@
     window.addEventListener('DOMContentLoaded', async () => {
       let response = await fetch(url)
       response = await response.json()
-      let isRayBan = false // new Date() > new Date('2022-02-12T07:00-06:00')
+      // 16 Feb, 9:27: Ray says the faire is under a burn ban "until further notice"
+      let isRayBan = true // new Date() > new Date('2022-02-12T07:00-06:00')
       let isBurnBan = isRayBan || response.features[0].attributes.BurnBan === 'Yes'
 
       document.body.classList.remove('hmm')
