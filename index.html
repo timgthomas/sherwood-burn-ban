@@ -148,16 +148,22 @@
   <script>
     let countyId = 11 // Bastrop: 11, Travis: 227
     let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
+    let isRayBan = true // new Date() > new Date('2022-02-12T07:00-06:00')
 
-    window.addEventListener('DOMContentLoaded', async () => {
-      let response = await fetch(url)
-      response = await response.json()
-      let isRayBan = true // new Date() > new Date('2022-02-12T07:00-06:00')
-      let isBurnBan = isRayBan || response.features[0].attributes.BurnBan === 'Yes'
-
+    function updateStatus(isBurnBan) {
       document.body.classList.remove('hmm')
       document.body.classList.toggle('yep', isBurnBan)
       document.body.classList.toggle('nope', !isBurnBan)
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (isRayBan) {
+        updateStatus(true)
+      } else {
+        fetch(url)
+          .then((res) => res.json())
+          .then((res) => updateStatus(res.features[0].attributes.BurnBan === 'Yes'))
+      }
     })
   </script>
   <script src="https://getinsights.io/js/insights.js"></script>
