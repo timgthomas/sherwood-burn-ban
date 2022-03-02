@@ -148,7 +148,7 @@
   <script>
     let countyId = 11 // Bastrop: 11, Travis: 227
     let url = `https://tfsgis.tfs.tamu.edu/arcgis/rest/services/BurnBan/BurnBan/MapServer/0/query?f=json&outFields=BurnBan,County,CountyID&where=CountyID%3D${countyId}&returnGeometry=false`
-    let isRayBan = true // new Date() > new Date('2022-02-12T07:00-06:00')
+    let isRayBan = false // new Date() > new Date('2022-02-12T07:00-06:00')
 
     function updateStatus(isBurnBan) {
       document.body.classList.remove('hmm')
