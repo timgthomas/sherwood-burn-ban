@@ -17,14 +17,15 @@
 
       --color-em: hsl(15, 100%, 56%);
 
-      --color-yep-dark: hsl(29, 92%, 10%);
       --color-yep: hsl(15, 100%, 56%);
+      --color-yep-dark: hsl(29, 92%, 10%);
 
-      --color-nope-dark: hsl(211, 100%, 15%);
       --color-nope: hsl(211, 100%, 57%);
+      --color-nope-dark: hsl(211, 100%, 15%);
     }
 
-    body.hmm {
+    body.hmm,
+    body.doh {
       --color-background: var(--color-hmm-dark);
       --color-border: var(--color-hmm);
     }
@@ -41,7 +42,8 @@
 
       body.hmm .show-hmm,
       body.nope .show-nope,
-      body.yep .show-yep {
+      body.yep .show-yep,
+      body.doh .show-doh {
         display: flex;
       }
 
@@ -110,6 +112,12 @@
         font-size: 7.2rem;
       }
 
+      p.result .details {
+        font-size: 1.4rem;
+        line-height: 1.3;
+        text-align: center;
+      }
+
     /* Global */
 
     body {
@@ -142,23 +150,31 @@
     <span class="description">Yes!</span>
     <span class="emoji">🔥</span>
   </p>
+  <p class="result show-doh">
+    <span class="description">D’oh!</span>
+    <span class="emoji">😖</span>
+    <span class="details">Something went wrong,<br />but we’re looking into it!</span>
+  </p>
   <footer>
     Data is provided by Sherwood management and the <a href="https://tfsweb.tamu.edu/burnbans/">Texas A&amp;M Forest Service</a>. Be aware of local conditions before starting any fire. Visit the <a href="https://www.co.bastrop.tx.us/page/em.outdoor_burning">Bastrop County web site</a> for details about outdoor burning.
   </footer>
   <script>
-    function updateStatus(isBurnBan) {
+    function updateStatus(isBurnBan, isError) {
       document.body.classList.remove('hmm')
-      document.body.classList.toggle('yep', isBurnBan)
-      document.body.classList.toggle('nope', !isBurnBan)
+      document.body.classList.toggle('yep', isBurnBan && !isError)
+      document.body.classList.toggle('nope', !isBurnBan && !isError)
+      document.body.classList.toggle('doh', isError)
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
       try {
         let req = await fetch('https://burn-ban.vercel.app/api/status')
         req = await req.json()
-        updateStatus(req.isBurnBan)
-      } catch {
-        // TODO: Handle errors
+        updateStatus(req.isBurnBan, false)
+      } catch(ex) {
+        updateStatus(null, true)
+        if (!insights) return
+        insights.track({ id: 'error', parameters: { message: ex.message } })
       }
     })
   </script>
