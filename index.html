@@ -135,6 +135,7 @@
     }
 
   </style>
+  <script defer data-domain="burn-ban.timgthomas.com" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="hmm">
   <h1>Is there a burn ban at Sherwood?</h1>
@@ -173,15 +174,8 @@
         updateStatus(req.isBurnBan, false)
       } catch(ex) {
         updateStatus(null, true)
-        if (!insights) return
-        insights.track({ id: 'error', parameters: { message: ex.message } })
       }
     })
-  </script>
-  <script src="https://getinsights.io/js/insights.js"></script>
-  <script>
-    insights.init('m2f37V63y6HdNg4W')
-    insights.trackPages()
   </script>
 </body>
 </html>
